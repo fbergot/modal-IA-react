@@ -1,0 +1,578 @@
+/* Overlay pour la modale */
+.chatIA-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Container principal */
+.chatIA-container {
+    background-color: white;
+    border-radius: unset;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    overflow: hidden;
+    animation: chatIA-zoomIn 300ms ease-out;
+    position: relative;
+
+    input {
+        height: 40px !important;
+    }
+}
+
+@media (min-width: 640px) {
+    .chatIA-container {
+        height: 90vh;
+        width: 100%;
+        max-width: 85%;
+        max-height: 80%;
+        border-radius: 0.75rem;
+    }
+}
+
+@keyframes chatIA-zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Sidebar */
+.chatIA-sidebar {
+    transform: translateX(-100%);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 50;
+    width: 20rem;
+    background-color: #f9fafb;
+    border-right: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    transition: transform 300ms ease-in-out;
+}
+
+.chatIA-sidebar.sidebar-open {
+    transform: translateX(0);
+}
+
+@media (min-width: 640px) {
+    .chatIA-sidebar {
+        width: 25rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .chatIA-sidebar {
+        transform: translateX(0);
+        position: relative;
+        transition: none;
+    }
+}
+
+/* Header de la sidebar */
+.chatIA-sidebar-header {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+@media (min-width: 640px) {
+    .chatIA-sidebar-header {
+        padding: 1rem;
+    }
+}
+
+.chatIA-sidebar-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.chatIA-sidebar-title {
+    font-weight: 600;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* Search input */
+.chatIA-search-container {
+    position: relative;
+}
+
+.chatIA-search-input {
+    width: 100%;
+    padding-left: 2.5rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    outline: none;
+    transition: all 150ms;
+}
+
+.chatIA-search-input:focus {
+    box-shadow: 0 0 0 2px #58c0cc;
+    border-color: transparent;
+}
+
+/* Sidebar content */
+.chatIA-sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.chatIA-chat-item {
+    padding: 0.75rem;
+    border-bottom: 1px solid #f3f4f6;
+    cursor: pointer;
+    transition: background-color 150ms;
+    background-color: white;
+    border-left: 4px solid transparent;
+    line-height: 19px;
+}
+
+.chatIA-chat-item:hover {
+    background-color: #f9fafb;
+}
+
+.chatIA-chat-item.isActive {
+    border-left: 4px solid var(--main-bg-color);
+}
+
+.chatIA-chat-item-title {
+    font-weight: 500;
+    font-size: 12px;
+    color: #111827;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatIA-chat-item-subtitle {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatIA-chat-item-time {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0;
+    font-size: 9px;
+    color: #9ca3af;
+}
+
+.chatIA-chat-item-time svg {
+    width: 0.75rem;
+    height: 0.75rem;
+}
+
+/* Main content area */
+.chatIA-main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* Main header */
+.chatIA-main-header {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media (min-width: 640px) {
+    .chatIA-main-header {
+        padding: 1rem;
+    }
+}
+
+.chatIA-main-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.chatIA-menu-button {
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    transition: background-color 150ms;
+}
+
+@media (min-width: 1024px) {
+    .chatIA-menu-button {
+        display: none;
+    }
+}
+
+.chatIA-menu-button svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #6b7280;
+}
+
+.chatIA-main-header-content {
+    min-width: 0;
+}
+
+.chatIA-main-title {
+    font-weight: 600;
+    color: #111827;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+}
+
+@media (min-width: 640px) {
+    .chatIA-main-title {
+        font-size: var(--main-font-size);
+    }
+}
+
+.chatIA-main-subtitle {
+    font-size: 12px;
+    color: #6b7280;
+    display: none;
+    margin: 0;
+}
+
+.chatIA-close-main-button {
+    padding: 3px 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    transition: background-color 150ms;
+    flex-shrink: 0;
+}
+
+.chatIA-close-main-button:hover {
+    background-color: #f3f4f6;
+}
+
+.chatIA-close-main-button svg {
+    position: relative;
+    left: -1px;
+    color: #6b7280;
+}
+
+/* Chat messages area */
+.chatIA-messages-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.75rem;
+}
+
+.chatIA-messages-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Welcome section */
+.chatIA-welcome-section {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.chatIA-welcome-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: #58c0cc;
+    margin: 0 auto 1rem;
+}
+
+.chatIA-welcome-title {
+    font-size: var(--main-font-size);
+    font-weight: 500;
+    color: #111827;
+    margin-bottom: 0.5rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.chatIA-welcome-text {
+    color: #6b7280;
+    font-size: var(--main-font-size);
+    padding: 0 1rem;
+    margin: 0;
+}
+
+.chatIA-welcome-tip {
+    color: #9ca3af;
+    font-size: 12px;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
+/* Messages */
+.message {
+    margin-bottom: 1rem;
+    max-width: 70%;
+}
+
+.message-user {
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+.message-ai {
+    align-self: flex-start;
+    margin-right: auto;
+}
+
+.message-content {
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    font-size: var(--main-font-size);
+    line-height: 1.5;
+    word-wrap: break-word;
+    p {
+        margin: 5px 0 !important;
+        font-size: var(--main-font-size);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin: 5px 0 !important;
+    }
+}
+
+.message-user .message-content {
+    background-color: #58c0cc;
+    color: white;
+    border-bottom-right-radius: 0.25rem;
+}
+
+.message-ai .message-content {
+    background-color: #f3f4f6;
+    color: #111827;
+    border-bottom-left-radius: 0.25rem;
+}
+
+.message-time {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin-top: 0.25rem;
+    text-align: right;
+}
+
+.message-ai .message-time {
+    text-align: left;
+}
+
+.typing-text {
+    margin-left: 7px;
+}
+
+/* Input area */
+.chatIA-input-area {
+    padding: 1rem;
+    border-top: 1px solid #e5e7eb;
+    background-color: white;
+}
+
+.chatIA-input-container {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    width: calc(100% - 87px);
+}
+
+.chatIA-message-input {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.75rem;
+    outline: none;
+    font-size: 13px;
+    transition: all 150ms;
+    line-height: 29px;
+}
+
+.chatIA-message-input:focus {
+    box-shadow: 0 0 0 2px #58c0cc;
+    border-color: transparent;
+}
+
+.chatIA-voice-button {
+    padding: 0.5rem;
+    border-radius: 0.75rem;
+    transition: background-color 150ms;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+.chatIA-voice-button:hover {
+    background-color: #e5e7eb;
+}
+
+.chatIA-voice-button.listening {
+    background-color: #58c0cc;
+    color: white;
+}
+
+.chatIA-voice-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.chatIA-send-button {
+    padding: 0.5rem;
+    background-color: #58c0cc;
+    color: white;
+    border-radius: 0.75rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 150ms;
+    flex-shrink: 0;
+}
+
+.chatIA-send-button:hover:not(:disabled) {
+    background-color: #4ab3bf;
+}
+
+.chatIA-send-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (min-width: 640px) {
+    .chatIA-messages-area {
+        padding: 1rem;
+    }
+
+    .chatIA-sidebar-title {
+        font-size: var(--main-font-size);
+    }
+
+    .chatIA-chat-item {
+        padding: 1rem;
+    }
+
+    .chatIA-main-subtitle {
+        display: block;
+        font-size: 13px;
+    }
+
+    .chatIA-welcome-section {
+        padding: 3rem 0;
+    }
+
+    .chatIA-welcome-icon {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .chatIA-welcome-tip {
+        font-size: var(--main-font-size);
+    }
+
+    .chatIA-input-area {
+        padding: 2rem 1rem;
+    }
+
+    .chatIA-input-container {
+        gap: 0.75rem;
+    }
+
+    .chatIA-message-input {
+        padding: 0.75rem 1rem;
+        font-size: var(--main-font-size);
+        line-height: 22px;
+    }
+}
+.chatIA-voice-button,
+.chatIA-send-button {
+    max-width: 40px;
+    min-width: 40px;
+    height: 40px;
+
+    i {
+        font-size: 17px;
+    }
+}
+
+.chatIA-input-buttons {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+/* Animation des points de frappe - Version avec rebond */
+.typing-indicator {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 18px;
+}
+
+.typing-indicator span {
+    font-size: 18px;
+    color: #666;
+    animation: typing 1.5s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%,
+    60%,
+    100% {
+        opacity: 0.3;
+        transform: translateY(0);
+    }
+    30% {
+        opacity: 1;
+        transform: translateY(-10px);
+    }
+}
