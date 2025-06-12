@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { marked } from "marked";
-import { Lightbulb, Loader } from "lucide-react";
+import { Bot, Lightbulb, Loader, User } from "lucide-react";
 import { getSuggestions } from "../utils/documentSuggestions";
 
 const MessageList = ({ messages, document, handleSuggestionClick }) => {
@@ -97,13 +97,26 @@ const MessageList = ({ messages, document, handleSuggestionClick }) => {
         <div className="chatIA-messages-area">
             <div className="chatIA-messages-content">
                 {messages.map((msg) => (
-                    <div key={msg.id} className={`message ${msg.isUser ? "message-user" : "message-ai"}`}>
-                        <div className="message-content">{renderMessage(msg)}</div>
-                        <div className="message-time">
-                            {msg.timestamp.toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                            })}
+                    <div style={{ display: 'flex', gap: '5px' }}>
+                        {msg.isUser ? (
+                            <div className="user-tag">
+                                <User style={{ width: '1.8rem', height: '1.8rem', color: '#4b5563' }} />
+                            </div>
+                        ): (
+                            <Bot style={{
+                                width: '2.5rem',
+                                height: '2.5rem',
+                                color: 'var(--main-bg-color)',
+                              }} />
+                        )}
+                        <div key={msg.id} className={`message ${msg.isUser ? "message-user" : "message-ai"}`}>
+                            <div className="message-content">{renderMessage(msg)}</div>
+                            <div className="message-time">
+                                {msg.timestamp.toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                })}
+                            </div>
                         </div>
                     </div>
                 ))}

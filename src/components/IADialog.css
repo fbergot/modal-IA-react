@@ -6,7 +6,7 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2000;
+    z-index: 5000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -134,7 +134,7 @@
 }
 
 .chatIA-search-input:focus {
-    box-shadow: 0 0 0 2px #58c0cc;
+    box-shadow: 0 0 0 2px var(--main-bg-color);
     border-color: transparent;
 }
 
@@ -305,7 +305,7 @@
 .chatIA-welcome-icon {
     width: 2.5rem;
     height: 2.5rem;
-    color: #58c0cc;
+    color: var(--main-bg-color);
     margin: 0 auto 1rem;
 }
 
@@ -378,7 +378,7 @@
 }
 
 .message-user .message-content {
-    background-color: #58c0cc;
+    background-color: var(--main-bg-color);
     color: white;
     border-bottom-right-radius: 0.25rem;
 }
@@ -430,7 +430,7 @@
 }
 
 .chatIA-message-input:focus {
-    box-shadow: 0 0 0 2px #58c0cc;
+    box-shadow: 0 0 0 2px var(--main-bg-color);
     border-color: transparent;
 }
 
@@ -450,7 +450,7 @@
 }
 
 .chatIA-voice-button.listening {
-    background-color: #58c0cc;
+    background-color: var(--main-bg-color);
     color: white;
 }
 
@@ -461,7 +461,7 @@
 
 .chatIA-send-button {
     padding: 0.5rem;
-    background-color: #58c0cc;
+    background-color: var(--main-bg-color);
     color: white;
     border-radius: 0.75rem;
     border: none;
@@ -580,9 +580,9 @@
 .chatIA-suggestion-tile {
     padding: 0.75rem;
     border-radius: 0.5rem;
-    border: 1px solid #58c0cc;
+    border: 1px solid var(--main-bg-color);
     background-color: rgba(88, 192, 204, 0.125);
-    color: #58c0cc;
+    color: var(--main-bg-color);
     text-align: left;
     transition: all 0.2s;
     cursor: pointer;
@@ -600,7 +600,7 @@
 }
 
 @media (min-width: 1024px) {
-    .chatIA-sidebar-title-row .chatIA-close-main-button {
+    .chatIA-sidebar-title-row .chatIA-close-main-button, .toClose {
         display: none;
     }
 }
@@ -610,6 +610,7 @@
     justify-content: center;
     align-items: center;
     height: 100%;
+    min-height: 250px;
 }
 
 
@@ -620,4 +621,28 @@
 @keyframes spin {
     from {transform: rotate(0deg)}
     to {transform: rotate(360deg)}
+}
+
+.BETA-tag {
+    padding: 4px 5px 2px 5px;
+    color: var(--main-green-color);
+    background-color: var(--main-green-background);
+    font-size: 9px;
+    border-radius: 3px;
+    display: inline-flex;
+    margin: auto;
+    position: relative;
+    bottom: 2px;
+}
+
+.user-tag {
+    width: 25px;
+    height: 25px;
+    background-color: rgb(209, 213, 219);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    order: 2;
 }

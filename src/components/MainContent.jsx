@@ -17,7 +17,7 @@ const MainContent = ({
         <div className="chatIA-main-content">
             <div className="chatIA-main-header">
                 <div className="chatIA-main-header-left">
-                    <button className="chatIA-menu-button" onClick={onMenuClick}>
+                    <button className="chatIA-close-main-button toClose" onClick={onMenuClick}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -35,7 +35,9 @@ const MainContent = ({
                         </svg>
                     </button>
                     <div className="chatIA-main-header-content">
-                        <h2 className="chatIA-main-title">Assistant IA - {documentDetails?.document?.name}</h2>
+                        <h2 className="chatIA-main-title">
+                            Assistant IA  <span className="BETA-tag">BETA</span> - {documentDetails?.document?.name}
+                        </h2>
                         <p className="chatIA-main-subtitle">{documentDetails?.document?.type}</p>
                     </div>
                 </div>
