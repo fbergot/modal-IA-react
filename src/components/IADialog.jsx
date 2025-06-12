@@ -12,6 +12,7 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
     const [isListening, setIsListening] = useState(false);
     const [documentDetails, setDocumentDetails] = useState({});
     const [chatHistory, setChatHistory] = useState([]);
+    const [chatHistoryIsLoading, setchatHistoryIsLoading] = useState(true);
     const [speechRecognition, setSpeechRecognition] = useState(null);
 
     // Fermer la modale avec Escape
@@ -76,10 +77,11 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
                 ];
             }
             setChatHistory(newChat);
+            setchatHistoryIsLoading(false);
         } catch (error) {
             console.error("Erreur fetch:", error);
         }
-    }, []);
+    }, [setchatHistoryIsLoading]);
 
     // ON vient chercher l'historique des requetes/réponses
     useEffect(() => {
@@ -241,6 +243,7 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
                     chatHistory={chatHistory}
                     handleChangeChat={handleChangeChat}
                     setSearchTerm={setSearchTerm}
+                    chatHistoryIsLoading={chatHistoryIsLoading}
                 />
 
                 <MainContent

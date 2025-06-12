@@ -1,6 +1,7 @@
+import { Loader } from "lucide-react";
 import { useState } from "react";
 
-const Sidebar = ({ isOpen, onClose, searchTerm, setSearchTerm, chatHistory, handleChangeChat, handleKeyUpSearchChat }) => {
+const Sidebar = ({ isOpen, onClose, searchTerm, setSearchTerm, chatHistory, handleChangeChat, handleKeyUpSearchChat, chatHistoryIsLoading }) => {
     const [isActive, setIsActive] = useState({ id: 0, state: true });
 
     const handleClickChat = (id) => {
@@ -48,28 +49,34 @@ const Sidebar = ({ isOpen, onClose, searchTerm, setSearchTerm, chatHistory, hand
                 </div>
             </div>
             <div className="chatIA-sidebar-content">
-                {chatHistory.map((chat) => (
-                    <div onClick={() => handleClickChat(chat.id)} key={chat.id} className={getChatClassName(chat.id)}>
-                        <div className="chatIA-chat-item-title">{chat.userPrompt || chat.title}</div>
-                        <div className="chatIA-chat-item-time">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                            </svg>
-                            {moment(chat.createdAt).format("DD/MM/YYYY")}
+                {
+                    chatHistoryIsLoading ?
+                        <div className="chatIA-container-chat-loader">
+                            <Loader size={24} className="chatIA-animate-spin" />
                         </div>
-                    </div>
-                ))}
+                    : chatHistory.map((chat) => (
+                        <div onClick={() => handleClickChat(chat.id)} key={chat.id} className={getChatClassName(chat.id)}>
+                            <div className="chatIA-chat-item-title">{chat.userPrompt || chat.title}</div>
+                            <div className="chatIA-chat-item-time">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                {moment(chat.createdAt).format("DD/MM/YYYY")}
+                            </div>
+                        </div>
+                    ))
+                }
             </div>
         </div>
     );

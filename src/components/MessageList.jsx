@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { marked } from "marked";
-import { Lightbulb } from "lucide-react";
+import { Lightbulb, Loader } from "lucide-react";
 import { getSuggestions } from "../utils/documentSuggestions";
 
 const MessageList = ({ messages, document, handleSuggestionClick }) => {
@@ -55,15 +55,22 @@ const MessageList = ({ messages, document, handleSuggestionClick }) => {
                     </div>
 
                     <div style={{ display: "grid", gap: "0.5rem" }}>
-                        {suggestions.map((suggestion, index) => (
-                            <button
-                                key={index}
-                                onClick={() => handleSuggestionClick(suggestion)}
-                                className="chatIA-suggestion-tile"
-                            >
-                                {suggestion.question}
-                            </button>
-                        ))}
+                        {
+                            suggestions.length ?
+                                suggestions.map((suggestion, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => handleSuggestionClick(suggestion)}
+                                        className="chatIA-suggestion-tile"
+                                    >
+                                        {suggestion.question}
+                                    </button>
+                                ))
+                            :
+                        <div className="chatIA-container-chat-loader">
+                            <Loader size={24} className="chatIA-animate-spin" />
+                        </div>
+                    }
                     </div>
                 </div>
             </div>
