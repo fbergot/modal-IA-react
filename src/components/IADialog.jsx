@@ -30,8 +30,7 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
             document.querySelector(".dashboard-content").style.zIndex = "10";
-            document.querySelector(".container-scroll").style.overflowY =
-                "auto";
+            document.querySelector(".container-scroll").style.overflowY = "auto";
         };
     }, [isOpen, onClose]);
 
@@ -39,11 +38,8 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
     useEffect(() => {
         (async () => {
             try {
-                const response = await fetch(
-                    `/fr/document/details/${documentId}`
-                );
-                if (!response.ok)
-                    throw new Error(`Erreur HTTP: ${response.status}`);
+                const response = await fetch(`/fr/document/details/${documentId}`);
+                if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
                 const document = await response.json();
                 setDocumentDetails(document);
             } catch (error) {
@@ -57,8 +53,7 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
             const response = await fetch(
                 `/fr/document/chathistory/${documentId}?search=${encodeURIComponent(searchParams || "")}`
             );
-            if (!response.ok)
-                throw new Error(`Erreur HTTP: ${response.status}`);
+            if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
             const data = await response.json();
 
             let newChat = [];
@@ -92,12 +87,8 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
     }, [documentId, fetchChatHistory]);
 
     useEffect(() => {
-        if (
-            "webkitSpeechRecognition" in window ||
-            "SpeechRecognition" in window
-        ) {
-            const SpeechRecognition =
-                window.SpeechRecognition || window.webkitSpeechRecognition;
+        if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const recognition = new SpeechRecognition();
 
             recognition.continuous = false;
@@ -106,13 +97,14 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
 
             recognition.onstart = () => {
                 setIsListening(true);
+                setMessage('Enregistrement en cours ...');
             };
 
+            // Ajouter le message audio de l'utilisateur
             recognition.onresult = (event) => {
-                // Ajouter le message audio de l'utilisateur
                 const transcript = event.results[0][0].transcript;
-                setMessage(transcript);
                 setIsListening(false);
+                setMessage(transcript);
             };
 
             recognition.onerror = (event) => {
@@ -148,71 +140,71 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
                       },
                   ];
         setMessages(newMessages);
+        setMessage("");
     };
 
     const handleSendMessage = async () => {
-        if (message.trim()) {
-            // Ajouter le message de l'utilisateur
+        if (!message.trim()) return;
+
+        // Ajouter le message de l'utilisateur
+        setMessages((prev) => [
+            ...prev,
+            {
+                id: Date.now(),
+                text: message,
+                isUser: true,
+                timestamp: new Date(),
+            },
+        ]);
+
+        setMessage("");
+
+        try {
+            // On ajoute un message avec loader le telmps de la réponse
+            const typingId = Date.now() + 1;
             setMessages((prev) => [
                 ...prev,
                 {
-                    id: Date.now(),
-                    text: message,
-                    isUser: true,
+                    id: typingId,
+                    isUser: false,
+                    isTyping: true,
                     timestamp: new Date(),
                 },
             ]);
 
-            const userPrompt = message;
-            setMessage("");
-
-            try {
-                // On ajoute un message avec loader le telmps de la réponse
-                const typingId = Date.now() + 1;
-                setMessages((prev) => [
-                    ...prev,
-                    {
-                        id: typingId,
-                        isUser: false,
-                        isTyping: true,
-                        timestamp: new Date(),
-                    },
-                ]);
-
-                const urlAnalyze = `/fr/document/analyzeIA/${documentId}?prompt=${encodeURIComponent(userPrompt)}`;
-                const response = await fetch(urlAnalyze);
-                if (!response.ok)
-                    throw new Error(`Erreur HTTP: ${response.status}`);
-                const data = await response.json();
-
-                // Retire l'indicateur de typing et ajoute la vraie réponse
-                setMessages((prev) => [
-                    // on vient virer le loader
-                    ...prev.filter((msg) => msg.id !== typingId),
-                    {
-                        id: Date.now(),
-                        text: data.responseMessage,
-                        isUser: false,
-                        timestamp: new Date(),
-                    },
-                ]);
-            } catch (error) {
-                console.error("Erreur lors de l'appel API:", error);
-
-                setMessages((prev) => prev.filter((msg) => !msg.isTyping));
-
-                // Ajouter un message d'erreur
-                setMessages((prev) => [
-                    ...prev,
-                    {
-                        id: Date.now(),
-                        text: "Désolé, une erreur s'est produite. Veuillez réessayer.",
-                        isUser: false,
-                        isError: true,
-                        timestamp: new Date(),
-                    },
-                ]);
+            const urlAnalyze = `/fr/document/analyzeIA/${documentId}?prompt=${encodeURIComponent(message)}`;
+            const response = await fetch(urlAnalyze);
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
             }
+            const data = await response.json();
+
+            // Retire l'indicateur de typing et ajoute la vraie réponse
+            setMessages((prev) => [
+                ...prev.filter((msg) => msg.id !== typingId),
+                {
+                    id: Date.now(),
+                    text: data.responseMessage,
+                    isUser: false,
+                    timestamp: new Date(),
+                },
+            ]);
+        } catch (error) {
+            console.error("Erreur lors de l'appel API:", error);
+
+            setMessages((prev) => prev.filter((msg) => !msg.isTyping));
+
+            // Ajouter un message d'erreur
+            setMessages((prev) => [
+                ...prev,
+                {
+                    id: Date.now(),
+                    text: "Désolé, une erreur s'est produite. Veuillez réessayer.",
+                    isUser: false,
+                    isError: true,
+                    timestamp: new Date(),
+                },
+            ]);
         }
     };
 
@@ -232,14 +224,15 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
         }
     };
 
+    const handleSuggestionClick = (suggestion) => {
+        setMessage(suggestion.question);
+    };
+
     if (!isOpen) return null;
 
     return (
         <div className="chatIA-overlay" onClick={onClose}>
-            <div
-                className="chatIA-container open"
-                onClick={(e) => e.stopPropagation()}
-            >
+            <div className="chatIA-container open" onClick={(e) => e.stopPropagation()}>
                 <Sidebar
                     isOpen={sidebarOpen}
                     onClose={() => setSidebarOpen(false)}
@@ -260,6 +253,7 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
                     onSendMessage={handleSendMessage}
                     onVoiceToggle={handleVoiceToggle}
                     isListening={isListening}
+                    handleSuggestionClick={handleSuggestionClick}
                 />
             </div>
         </div>

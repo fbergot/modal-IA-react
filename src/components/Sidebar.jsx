@@ -1,14 +1,6 @@
 import { useState } from "react";
 
-const Sidebar = ({
-    isOpen,
-    onClose,
-    searchTerm,
-    setSearchTerm,
-    chatHistory,
-    handleChangeChat,
-    handleKeyUpSearchChat,
-}) => {
+const Sidebar = ({ isOpen, onClose, searchTerm, setSearchTerm, chatHistory, handleChangeChat, handleKeyUpSearchChat }) => {
     const [isActive, setIsActive] = useState({ id: 0, state: true });
 
     const handleClickChat = (id) => {
@@ -27,10 +19,7 @@ const Sidebar = ({
             <div className="chatIA-sidebar-header">
                 <div className="chatIA-sidebar-title-row">
                     <h3 className="chatIA-sidebar-title">Historique</h3>
-                    <button
-                        className="chatIA-close-main-button"
-                        onClick={onClose}
-                    >
+                    <button className="chatIA-close-main-button" onClick={onClose}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -60,14 +49,8 @@ const Sidebar = ({
             </div>
             <div className="chatIA-sidebar-content">
                 {chatHistory.map((chat) => (
-                    <div
-                        onClick={() => handleClickChat(chat.id)}
-                        key={chat.id}
-                        className={getChatClassName(chat.id)}
-                    >
-                        <div className="chatIA-chat-item-title">
-                            {chat.userPrompt || chat.title}
-                        </div>
+                    <div onClick={() => handleClickChat(chat.id)} key={chat.id} className={getChatClassName(chat.id)}>
+                        <div className="chatIA-chat-item-title">{chat.userPrompt || chat.title}</div>
                         <div className="chatIA-chat-item-time">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"

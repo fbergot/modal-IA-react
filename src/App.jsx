@@ -22,13 +22,7 @@ function App() {
 
     return (
         <div className="App">
-            {isOpen && (
-                <IADialog
-                    documentId={documentId}
-                    isOpen={isOpen}
-                    onClose={() => setIsOpen(false)}
-                />
-            )}
+            {isOpen && <IADialog documentId={documentId} isOpen={isOpen} onClose={() => setIsOpen(false)} />}
         </div>
     );
 }

@@ -11,15 +11,13 @@ const MainContent = ({
     onVoiceToggle,
     isListening,
     documentDetails,
+    handleSuggestionClick,
 }) => {
     return (
         <div className="chatIA-main-content">
             <div className="chatIA-main-header">
                 <div className="chatIA-main-header-left">
-                    <button
-                        className="chatIA-menu-button"
-                        onClick={onMenuClick}
-                    >
+                    <button className="chatIA-menu-button" onClick={onMenuClick}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -37,12 +35,8 @@ const MainContent = ({
                         </svg>
                     </button>
                     <div className="chatIA-main-header-content">
-                        <h2 className="chatIA-main-title">
-                            Assistant IA - {documentDetails?.document?.name}
-                        </h2>
-                        <p className="chatIA-main-subtitle">
-                            {documentDetails?.document?.type}
-                        </p>
+                        <h2 className="chatIA-main-title">Assistant IA - {documentDetails?.document?.name}</h2>
+                        <p className="chatIA-main-subtitle">{documentDetails?.document?.type}</p>
                     </div>
                 </div>
                 <button className="chatIA-close-main-button" onClick={onClose}>
@@ -63,10 +57,7 @@ const MainContent = ({
                 </button>
             </div>
 
-            <MessageList
-                document={documentDetails?.document}
-                messages={messages}
-            />
+            <MessageList document={documentDetails?.document} messages={messages} handleSuggestionClick={handleSuggestionClick} />
 
             <MessageInput
                 message={message}

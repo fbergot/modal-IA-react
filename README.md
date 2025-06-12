@@ -40,8 +40,7 @@ L'interface s'adapte automatiquement :
 npm run build
 ```
 
-Les fichiers optimisés seront générés dans le dossier `/web/dist`.
-
+Les fichiers optimisés seront générés directement dans le dossier `/web/dist`.
 
 ## 💻 Technologies utilisées
 
