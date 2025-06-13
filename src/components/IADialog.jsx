@@ -4,7 +4,7 @@ import MainContent from "./MainContent";
 import "./IADialog.css";
 import { useCallback } from "react";
 
-const IADialog = ({ isOpen, onClose, documentId }) => {
+const IADialog = ({ isOpen, onClose, documentId, userId }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [message, setMessage] = useState("");
@@ -39,7 +39,7 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
     useEffect(() => {
         (async () => {
             try {
-                const response = await fetch(`/fr/document/details/${documentId}`);
+                const response = await fetch(`/fr/document/details/${documentId}?userId=${userId || ''}`);
                 if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
                 const document = await response.json();
                 setDocumentDetails(document);
@@ -47,12 +47,12 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
                 console.error("Erreur fetch:", error);
             }
         })();
-    }, [documentId]);
+    }, [documentId, userId]);
 
     const fetchChatHistory = useCallback(async (documentId, searchParams) => {
         try {
             const response = await fetch(
-                `/fr/document/chathistory/${documentId}?search=${encodeURIComponent(searchParams || "")}`
+                `/fr/document/chathistory/${documentId}?search=${encodeURIComponent(searchParams || "")}&userId=${userId || ''}`
             );
             if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
             const data = await response.json();
@@ -81,7 +81,7 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
         } catch (error) {
             console.error("Erreur fetch:", error);
         }
-    }, [setchatHistoryIsLoading]);
+    }, [setchatHistoryIsLoading, userId]);
 
     // ON vient chercher l'historique des requetes/réponses
     useEffect(() => {
@@ -174,7 +174,7 @@ const IADialog = ({ isOpen, onClose, documentId }) => {
                 },
             ]);
 
-            const urlAnalyze = `/fr/document/analyzeIA/${documentId}?prompt=${encodeURIComponent(message)}`;
+            const urlAnalyze = `/fr/document/analyzeIA/${documentId}?prompt=${encodeURIComponent(message)}&userId=${userId || ''}`;
             const response = await fetch(urlAnalyze);
             if (!response.ok) {
                 throw new Error(`Erreur HTTP: ${response.status}`);

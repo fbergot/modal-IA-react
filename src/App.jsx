@@ -4,12 +4,15 @@ import IADialog from "./components/IADialog";
 function App() {
     const [isOpen, setIsOpen] = useState(false);
     const [documentId, setDocumentId] = useState(null);
+    const [userId, setUserId] = useState(null);
 
     useEffect(() => {
         const handleToggleModal = (event) => {
             setIsOpen((prev) => !prev);
-            const { documentId } = event.detail;
+
+            const { documentId, userId: userid } = event.detail;
             setDocumentId(documentId);
+            userid && setUserId(userid);
         };
 
         document.addEventListener("toggleModalIA", handleToggleModal);
@@ -18,11 +21,11 @@ function App() {
         return () => {
             document.removeEventListener("toggleModalIA", handleToggleModal);
         };
-    }, []);
+    }, [userId]);
 
     return (
         <div className="App">
-            {isOpen && <IADialog documentId={documentId} isOpen={isOpen} onClose={() => setIsOpen(false)} />}
+            {isOpen && <IADialog userId={userId} documentId={documentId} isOpen={isOpen} onClose={() => setIsOpen(false)} />}
         </div>
     );
 }
